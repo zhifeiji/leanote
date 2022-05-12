@@ -21,3 +21,6 @@ dep-prod:
 dep-dev:
 	gulp --env dev
 
+clean:
+	rm -rf bin bin.tar.gz target target.tar.gz
+

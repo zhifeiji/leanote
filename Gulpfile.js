@@ -426,7 +426,7 @@ var revCollector = require('gulp-rev-collector');
 var cdnViews = "dist/views"
 var cdnUrl = "/public"
 if (options.env === 'prod') {
-    cdnUrl = "https://cdn.jsdelivr.net/gh/zhifeiji/leanote/public_"+cdnVersion
+    cdnUrl = "https://cdn.jsdelivr.net/gh/zhifeiji/note_res/public_"+cdnVersion
     var child_process = require('child_process');
     function copyDir(src, dest) {
         child_process.spawn('cp', ['-rf', src, dest]);
