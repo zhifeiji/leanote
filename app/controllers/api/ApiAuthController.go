@@ -1,8 +1,8 @@
 package api
 
 import (
-	"github.com/leanote/leanote/app/info"
-	. "github.com/leanote/leanote/app/lea"
+	"github.com/zhifeiji/leanote/app/info"
+	. "github.com/zhifeiji/leanote/app/lea"
 	"github.com/revel/revel"
 	"gopkg.in/mgo.v2/bson"
 	//	"strconv"

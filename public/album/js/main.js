@@ -8,7 +8,7 @@ function retIsOk(ret) {
 	return false;
 }
 
-var urlPrefix = '';
+var urlPrefix = 'https://cdn.jsdelivr.net/gh/';
 var getMsg = parent.getMsg;
 if (!getMsg) {
 	getMsg = function(msg) {
@@ -269,9 +269,10 @@ var o = {
 					each.Path = each.Path.substr(1);
 				}
 				if(each.Path != "" && each.Path.substr(0, 7) == "upload/") {
-					var src = urlPrefix + "/" + each.Path;
+					var src = urlPrefix + each.Path
 				} else {
-					var src = urlPrefix + "/api/file/getImage?fileId=" + each.FileId;
+					//var src = urlPrefix + "/api/file/getImage?fileId=" + each.FileId+each.Path;
+					var src = urlPrefix + each.Path
 				}
 				// log(src);
 				if(selectedMap[src]) {
@@ -776,7 +777,7 @@ var o = {
 	                data.context.remove();
 
 	               	// add image to preview
-	                self.addSelectedImage(data.result.Id);
+	                self.addSelectedImage(urlPrefix + data.result.Item.Path);
 	                // reresh image list
 	                self.uploadRefreshImageList();
 	            } else {

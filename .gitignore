@@ -5,6 +5,8 @@ routes/
 /src
 pkg
 bin2
+bin
+bin.tar.gz
 bin/i18n
 bin/leanote*
 bin/release

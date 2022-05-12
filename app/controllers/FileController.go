@@ -2,14 +2,18 @@ package controllers
 
 import (
 	"github.com/revel/revel"
+	"github.com/zhifeiji/leanote/app/lea/gitpic"
+
 	//	"encoding/json"
 	"fmt"
-	"github.com/leanote/leanote/app/info"
-	. "github.com/leanote/leanote/app/lea"
-	"github.com/leanote/leanote/app/lea/netutil"
-	"gopkg.in/mgo.v2/bson"
 	"io/ioutil"
 	"os"
+
+	"github.com/zhifeiji/leanote/app/info"
+	. "github.com/zhifeiji/leanote/app/lea"
+	"github.com/zhifeiji/leanote/app/lea/netutil"
+	"gopkg.in/mgo.v2/bson"
+
 	//	"strconv"
 	"strings"
 )
@@ -117,7 +121,6 @@ func (c File) uploadImage(from, albumId string) (re info.Re) {
 	// defer file.Close()
 
 	// data, err := ioutil.ReadAll(file)
-	
 
 	// 生成上传路径
 	newGuid := NewGuid()
@@ -183,11 +186,23 @@ func (c File) uploadImage(from, albumId string) (re info.Re) {
 		LogJ(err)
 		return re
 	}
+	//上传github
+	config := revel.Config
+	owner, _ := config.String("github.owner")
+	repo, _ := config.String("github.repo")
+	token, _ := config.String("github.token")
+	githubAPI := gitpic.NewGitHubAPI(owner, repo, token)
+	err = githubAPI.UploadFile(fileUrlPath+"/"+filename, data)
+	if err != nil {
+		LogJ(err)
+		return re
+	}
+
 	// 改变成gif图片
-	_, toPathGif := TransToGif(toPath, 0, true)
+	_, toPathGif := TransToGif(toPath, 100, true)
 	filename = GetFilename(toPathGif)
 	filesize := GetFilesize(toPathGif)
-	fileUrlPath += "/" + filename
+	fileUrlPath = owner + "/" + repo + "/" + fileUrlPath + "/" + filename
 	resultCode = 1
 	resultMsg = "Upload Success!"
 
@@ -208,7 +223,7 @@ func (c File) uploadImage(from, albumId string) (re info.Re) {
 	Ok, resultMsg = fileService.AddImage(fileInfo, albumId, c.GetUserId(), from == "" || from == "pasteImage")
 	resultMsg = c.Message(resultMsg)
 
-	fileInfo.Path = "" // 不要返回
+	//fileInfo.Path = "" // 不要返回
 	re.Item = fileInfo
 
 	return re

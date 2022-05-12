@@ -2,9 +2,9 @@ package admin
 
 import (
 	"github.com/revel/revel"
-	//	. "github.com/leanote/leanote/app/lea"
+	//	. "github.com/zhifeiji/leanote/app/lea"
 	"fmt"
-	"github.com/leanote/leanote/app/info"
+	"github.com/zhifeiji/leanote/app/info"
 	"strings"
 )
 

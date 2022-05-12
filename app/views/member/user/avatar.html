@@ -11,7 +11,7 @@
 				<div class="form-group">
 	                <div id="dropAvatar" class="dropzone">
 	                	<div>
-							<img src="{{if .userInfo.Logo}}{{.userInfo.Logo}}{{else}}/images/blog/default_avatar.png{{end}}" id="avatar"/>
+							<img src="{{if .userInfo.Logo}}https://cdn.jsdelivr.net/gh/{{.userInfo.Logo}}{{else}}/images/blog/default_avatar.png{{end}}" id="avatar"/>
 						</div>
 	                    <a class="btn btn-success btn-choose-file">
 							<span class="fa fa-upload"></span> {{msg . "chooseImage"}}
@@ -31,7 +31,7 @@
 {{template "member/footer.html" .}}
 <script src="/js/require.js"></script>
 <script>
-var UrlPrefix = "{{.siteUrl}}"; // 为了发weibo
+var UrlPrefix = 'https://cdn.jsdelivr.net/gh/' //"{{.siteUrl}}"; // 为了发weibo
 var GlobalConfigs = {{.globalConfigs|jsonJs}}; // 2014/11/9 beta2
 require.config({
 	baseUrl: '/public',

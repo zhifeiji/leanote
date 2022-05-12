@@ -8,7 +8,7 @@ import (
 	"path/filepath"
 	"regexp"
 	"strings"
-	. "github.com/leanote/leanote/app/lea"
+	. "github.com/zhifeiji/leanote/app/lea"
 )
 
 const (

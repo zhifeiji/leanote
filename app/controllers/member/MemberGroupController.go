@@ -1,7 +1,7 @@
 package member
 
 import (
-	"github.com/leanote/leanote/app/info"
+	"github.com/zhifeiji/leanote/app/info"
 	"github.com/revel/revel"
 )
 
