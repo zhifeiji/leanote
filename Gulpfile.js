@@ -7,6 +7,8 @@ var concat = require('gulp-concat');
 var replace = require('gulp-replace');
 var inject = require('gulp-inject');
 var gulpSequence = require('gulp-sequence');
+var cdn = require('gulp-cdn');
+var minimist = require('minimist');
 
 var fs = require('fs');
 
@@ -16,6 +18,17 @@ var noteDev = leanoteBase + '/app/views/note/note-dev.html';
 var noteProBase = leanoteBase + '/app/views/note';
 
 var messagesPath = leanoteBase + 'messages';
+
+// 定义cdn版本号,每次更新public目录，需要升级该版本号
+var cdnVersion = 1;
+
+
+var knownOptions = {
+    string: 'env',
+    default: { env: process.env.NODE_ENV || 'prod' }
+};
+
+var options = minimist(process.argv.slice(2), knownOptions);
 
 // 合并Js, 这些js都是不怎么修改, 且是依赖
 // 840kb, 非常耗时!!
@@ -405,9 +418,45 @@ gulp.task('minifycss', function() {
             .pipe(gulp.dest(base + '/css/theme'));
     }
     */
+
+});
+
+var revCollector = require('gulp-rev-collector');
+
+var cdnViews = "dist/views"
+var cdnUrl = "/public"
+if (options.env === 'prod') {
+    cdnUrl = "https://cdn.jsdelivr.net/gh/zhifeiji/leanote/public_"+cdnVersion
+    var child_process = require('child_process');
+    function copyDir(src, dest) {
+        child_process.spawn('cp', ['-rf', src, dest]);
+    }
+    copyDir("public","public_"+cdnVersion);
+}
+
+var src = [
+    'app/views/*/*.html',
+    'app/views/*/*/*.html',
+]
+
+
+
+gulp.task('cdn', function() {
+    gulp.src(src)
+        .pipe(revCollector()) //根据对应关系进行替换
+        .pipe(replace(/href="\/css/g, "href=\""+cdnUrl+"/css"))
+        .pipe(replace(/href="\/js/g, "href=\""+cdnUrl+"/js"))
+        .pipe(replace(/src="\/css/g, "src=\""+cdnUrl+"/css"))
+        .pipe(replace(/src="\/js/g, "src=\""+cdnUrl+"/js"))
+        .pipe(replace(/src="\/tinymce/g, "src=\""+cdnUrl+"/tinymce"))
+        .pipe(replace(/src="\/public/g, "src=\""+cdnUrl))
+        .pipe(replace(/href="\/public/g, "href=\""+cdnUrl))
+        .pipe(replace(/href="\/images/g, "href=\""+cdnUrl+"/images"))
+        .pipe(replace(/src="\/images/g, "src=\""+cdnUrl+"/images"))
+        .pipe(gulp.dest(cdnViews));
 });
 
 
 gulp.task('concat', ['concatDepJs', 'concatAppJs', /* 'concatMarkdownJs', */'concatMarkdownJsV2']);
 gulp.task('html', ['devToProHtml']);
-gulp.task('default', ['concat', 'plugins', 'minifycss', 'i18n', 'concatAlbumJs', 'html']);
+gulp.task('default', ['concat', 'plugins', 'minifycss', 'i18n', 'concatAlbumJs', 'html','cdn']);

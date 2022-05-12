@@ -25,6 +25,8 @@ files/
 .idea
 *.iml
 target/
+target.tar.gz
+dist
 package/leanote.tar.gz
 package/leanote/
 leanote.log
