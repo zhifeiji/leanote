@@ -24,3 +24,10 @@ dep-dev:
 clean:
 	rm -rf bin bin.tar.gz target target.tar.gz
 
+pack:
+	GOOS=linux revel package --run-mode=prod --target-path=target.tar.gz -a .
+	tar zxf target.tar.gz -C target
+	rm -rf target.tar.gz
+	tar zcf target.tar.gz target
+	rm -rf target
+
