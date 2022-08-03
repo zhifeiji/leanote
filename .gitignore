@@ -30,3 +30,4 @@ dist
 package/leanote.tar.gz
 package/leanote/
 leanote.log
+.codecc

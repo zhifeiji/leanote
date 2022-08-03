@@ -194,7 +194,7 @@ func (c File) uploadImage(from, albumId string) (re info.Re) {
 	githubAPI := gitpic.NewGitHubAPI(owner, repo, token)
 	err = githubAPI.UploadFile(fileUrlPath+"/"+filename, data)
 	if err != nil {
-		LogJ(err)
+		Logf("UploadFile error:%+v", err)
 		return re
 	}
 
